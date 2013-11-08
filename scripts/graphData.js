@@ -161,6 +161,12 @@ function graphData() {
         removeA(this.nodes, node);
     };
     /**
+     * Delete a link by its array index.
+     */
+    this.deleteLinkByIndex = function(linkIdx) {
+        this.links.splice(linkIdx, 1);
+    };
+    /**
      * read graph links from TAB text
      */
     this.readTab = function(text) {
