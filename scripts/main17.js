@@ -298,7 +298,8 @@ var addEdgeForm = d3.select("body").append("form").style({
     display : 'none'
 }).attr({
     'id' : 'addEdgeForm'
-}); {// setup node selection mode controls
+});
+{// setup node selection mode controls
     addEdgeForm.append('p').text('edge type:');
 
     // TODO build select box for edge type
@@ -623,6 +624,7 @@ d3.text(graphDataURL, function(error, data) {
 // requires svg, force, graph, cmg, circleDataLoaded, and various constants
 function renderGraph(svg, force, graph) {"use strict";
 
+    var opacityVal = 0.6;
     var largeScale = 'scale(2)';
     var smallScale = 'scale(0.2)';
 
@@ -649,6 +651,7 @@ function renderGraph(svg, force, graph) {"use strict";
         return 'link' + i;
     }).attr({
         'class' : "link",
+        'opacity' : opacityVal,
         'marker-start' : null,
         'marker-mid' : null,
         'marker-end' : 'url(#arrowhead_marker)'
@@ -740,7 +743,6 @@ function renderGraph(svg, force, graph) {"use strict";
     });
 
     // node visualization
-    var opacityVal = 0.6;
     nodeSelection.append(function(d) {
         var nodeName = d['name'];
         var type = d.group.toString().toLowerCase();
