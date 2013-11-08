@@ -638,7 +638,7 @@ function renderGraph(svg, force, graph) {"use strict";
 
     // reset circleMapSvg class elements by creating circleMap elements for each query feature.
     var svgNodeLayer = svg.select('#nodeLayer').attr({
-        //  'opacity' : 0
+        // 'opacity' : 0
     });
     var nodeNames = graph.getAllNodeNames();
 
@@ -651,10 +651,19 @@ function renderGraph(svg, force, graph) {"use strict";
         return 'link' + i;
     }).attr({
         'class' : "link",
-        'opacity' : opacityVal,
-        'marker-start' : null,
-        'marker-mid' : null,
-        'marker-end' : 'url(#arrowhead_marker)'
+        'opacity' : opacityVal
+    }).attr('marker-start', function(d, i) {
+        return null;
+    }).attr('marker-mid', function(d, i) {
+        return null;
+    }).attr('marker-end', function(d, i) {
+        var marker = null;
+        if (stringEndsWith(d.relation, '|')) {
+            marker = 'url(#bar_marker)';
+        } else if (stringEndsWith(d.relation, '>')) {
+            marker = 'url(#arrowhead_marker)';
+        }
+        return marker;
     }).style("stroke", function(d) {
         return colorMapper(d.relation);
     });
@@ -1087,4 +1096,13 @@ function getQueryStringParameterByName(name) {
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
     var results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+/**
+ *Taken from <a href='http://stackoverflow.com/questions/280634/endswith-in-javascript'>stackoverflow</a>.
+ * @param {Object} str
+ * @param {Object} suffix
+ */
+function stringEndsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
