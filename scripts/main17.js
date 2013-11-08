@@ -21,7 +21,6 @@ var edgeTypeSymbols = ['stop adding edges', '-a>', '-a|', '-t>', '-t|', 'compone
 
 var throbberUrl = 'images/loading_16.gif';
 
-
 // vars for d3.layout.force
 var linkDistance = 120;
 var linkStrength = 0.2;
@@ -80,6 +79,33 @@ var svg = d3.select("body").append("svg").attr({
     'width' : '100%',
     'height' : '100%',
     'id' : 'circleMaps'
+});
+
+var svg_defs = svg.append('defs');
+
+svg_defs.append('marker').attr({
+    'id' : 'arrowhead_marker',
+    'refX' : 5,
+    'refY' : 2,
+    'markerWidth' : 5,
+    'markerHeight' : 5,
+    'orient' : 'auto'
+}).append('path').attr({
+    'd' : 'M 0 0 V 4 L5 2 Z'
+});
+
+svg_defs.append('marker').attr({
+    'id' : 'bar_marker',
+    'viewBox' : '-5 -5 10 10',
+    'refX' : 0,
+    'refY' : 0,
+    'markerWidth' : 5,
+    'markerHeight' : 5,
+    'orient' : 'auto',
+    'stroke' : 'black',
+    'stroke-width' : 3
+}).append('path').attr({
+    'd' : 'M 0 -5 L 0 5 '
 });
 
 var bbox = document.getElementById('circleMaps').getBBox();
@@ -609,9 +635,10 @@ function renderGraph(svg, force, graph) {"use strict";
     }
 
     // reset circleMapSvg class elements by creating circleMap elements for each query feature.
-    var svgNodeLayer = svg.select('#nodeLayer');
+    var svgNodeLayer = svg.select('#nodeLayer').attr({
+        //  'opacity' : 0
+    });
     var nodeNames = graph.getAllNodeNames();
-
 
     // start the layout
     force.nodes(graph.nodes).links(graph.links).start();
@@ -621,7 +648,10 @@ function renderGraph(svg, force, graph) {"use strict";
     var linkSelection = svgLinkLayer.selectAll(".link").data(graph.links).enter().append("line").attr('id', function(d, i) {
         return 'link' + i;
     }).attr({
-        'class' : "link"
+        'class' : "link",
+        'marker-start' : null,
+        'marker-mid' : null,
+        'marker-end' : 'url(#arrowhead_marker)'
     }).style("stroke", function(d) {
         return colorMapper(d.relation);
     });
