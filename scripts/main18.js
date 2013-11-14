@@ -298,8 +298,7 @@ var addEdgeForm = d3.select("body").append("form").style({
     display : 'none'
 }).attr({
     'id' : 'addEdgeForm'
-});
-{// setup node selection mode controls
+}); {// setup node selection mode controls
     addEdgeForm.append('p').text('edge type:');
 
     // TODO build select box for edge type
@@ -644,6 +643,20 @@ function renderGraph(svg, force, graph) {"use strict";
 
     // start the layout
     force.nodes(graph.nodes).links(graph.links).start();
+
+    var drag = force.drag().on("dragstart", function(d) {
+        console.log('dragstart: ' + JSON.stringify(d.fixed));
+
+        var nodeClickMode = getNodeClickMode();
+        if (nodeClickMode == 'none' || nodeClickMode == edgeTypeOptions[0]) {
+            if (d.fixed != true) {
+                d.fixed = true;
+            } else {
+                d.fixed = null;
+            }
+            d3.select(this).classed("fixed", true);
+        }
+    });
 
     // links
     var svgLinkLayer = svg.select('#linkLayer');
