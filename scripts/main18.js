@@ -43,7 +43,7 @@ var clickedNodesArray = new Array();
 
 // div in which the editor should appear
 var editor_div = null;
-setEditorDiv('body');
+setEditorDiv('sbgn_editor');
 
 // TODO dialogBox is a div
 var pathwayDialogBox = editor_div.append('div').attr({
@@ -302,7 +302,8 @@ var addEdgeForm = editor_div.append("form").style({
     display : 'none'
 }).attr({
     'id' : 'addEdgeForm'
-}); {// setup node selection mode controls
+});
+{// setup node selection mode controls
     addEdgeForm.append('p').text('edge type:');
 
     // TODO build select box for edge type
@@ -628,7 +629,7 @@ d3.text(graphDataURL, function(error, data) {
  * Set the div for the editor window.
  */
 function setEditorDiv(div_id) {
-    editor_div = d3.select(div_id);
+    editor_div = d3.select('#' + div_id);
 }
 
 // requires svg, force, graph, cmg, circleDataLoaded, and various constants
