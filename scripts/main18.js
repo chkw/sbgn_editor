@@ -41,8 +41,12 @@ var clickedNodesArray = new Array();
 
 // $("input[type=button]").button();
 
+// div in which the editor should appear
+var editor_div = null;
+setEditorDiv('body');
+
 // TODO dialogBox is a div
-var pathwayDialogBox = d3.select('body').append('div').attr({
+var pathwayDialogBox = editor_div.append('div').attr({
     id : 'pathwayDialog',
     title : ''
 }).style({
@@ -52,21 +56,21 @@ var pathwayDialogBox = d3.select('body').append('div').attr({
     'readonly' : 'readonly'
 });
 
-var elementDialogBox = d3.select('body').append('div').attr({
+var elementDialogBox = editor_div.append('div').attr({
     id : 'elementDialog',
     title : ''
 }).style({
     display : 'none'
 });
 
-var addNodeDialogBox = d3.select('body').append('div').attr({
+var addNodeDialogBox = editor_div.append('div').attr({
     id : 'addNodeDialog',
     title : ''
 }).style({
     display : 'none'
 });
 
-var addEdgeDialogBox = d3.select('body').append('div').attr({
+var addEdgeDialogBox = editor_div.append('div').attr({
     id : 'addEdgeDialog',
     title : ''
 }).style({
@@ -75,7 +79,7 @@ var addEdgeDialogBox = d3.select('body').append('div').attr({
 
 // TODO svg element that contains the graph
 
-var svg = d3.select("body").append("svg").attr({
+var svg = editor_div.append("svg").attr({
     'width' : '100%',
     'height' : '100%',
     'id' : 'circleMaps'
@@ -214,7 +218,7 @@ var force = d3.layout.force().size([svgWidth, svgHeight]).linkDistance(linkDista
 
 //TODO setup controls
 
-var form = d3.select("body").append("form").style({
+var form = editor_div.append("form").style({
     display : 'none',
     'id' : 'mainForm'
 });
@@ -294,7 +298,7 @@ var addRandomConnectedNodeButton = form.append("input").attr({
     'class' : 'addControl'
 });
 
-var addEdgeForm = d3.select("body").append("form").style({
+var addEdgeForm = editor_div.append("form").style({
     display : 'none'
 }).attr({
     'id' : 'addEdgeForm'
@@ -620,6 +624,13 @@ d3.text(graphDataURL, function(error, data) {
 
 // TODO instance methods
 
+/**
+ * Set the div for the editor window.
+ */
+function setEditorDiv(div_id) {
+    editor_div = d3.select(div_id);
+}
+
 // requires svg, force, graph, cmg, circleDataLoaded, and various constants
 function renderGraph(svg, force, graph) {"use strict";
 
@@ -644,19 +655,19 @@ function renderGraph(svg, force, graph) {"use strict";
     // start the layout
     force.nodes(graph.nodes).links(graph.links).start();
 
-    var drag = force.drag().on("dragstart", function(d) {
-        console.log('dragstart: ' + JSON.stringify(d.fixed));
-
-        var nodeClickMode = getNodeClickMode();
-        if (nodeClickMode == 'none' || nodeClickMode == edgeTypeOptions[0]) {
-            if (d.fixed != true) {
-                d.fixed = true;
-            } else {
-                d.fixed = null;
-            }
-            d3.select(this).classed("fixed", true);
-        }
-    });
+    // var drag = force.drag().on("dragstart", function(d) {
+    // var nodeClickMode = getNodeClickMode();
+    // if (nodeClickMode == 'none' || nodeClickMode == edgeTypeOptions[0]) {
+    // var old_fixed = d.fixed;
+    // if (d.fixed != true) {
+    // d.fixed = true;
+    // } else {
+    // d.fixed = false;
+    // }
+    // console.log(d.name + ' old:' + old_fixed + ' new:' + d.fixed);
+    // // d3.select(this).classed("fixed", true);
+    // }
+    // });
 
     // links
     var svgLinkLayer = svg.select('#linkLayer');
