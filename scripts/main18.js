@@ -82,7 +82,7 @@ var addEdgeDialogBox = editor_div.append('div').attr({
 var svg = editor_div.append("svg").attr({
     'width' : '100%',
     'height' : '100%',
-    'id' : 'circleMaps'
+    'id' : 'editor_svg'
 });
 
 var svg_defs = svg.append('defs');
@@ -112,7 +112,7 @@ svg_defs.append('marker').attr({
     'd' : 'M 0 -5 L 0 5 '
 });
 
-var bbox = document.getElementById('circleMaps').getBBox();
+var bbox = document.getElementById('editor_svg').getBBox();
 // var svgWidth = bbox.width / 2, svgHeight = bbox.height / 2;
 console.log('bbox: ' + JSON.stringify(bbox));
 var svgWidth = $(window).width(), svgHeight = $(window).height();
@@ -146,7 +146,7 @@ function showPathwayDialog() {
 
 $(function() {
 
-    $('#circleMaps').contextPopup({
+    $('#editor_svg').contextPopup({
         title : '',
         items : [{
             // addNodeDialog
@@ -191,7 +191,7 @@ $(function() {
 // var svg = d3.select("body").append("svg").attr({
 // 'width' : svgWidth,
 // 'height' : svgHeight,
-// 'id' : 'circleMaps'
+// 'id' : 'editor_svg'
 // }).append('g').call(d3.behavior.zoom().scaleExtent([0.2, 8]).on("zoom", zoom)).append('g');
 //
 // svg.append("rect").attr("class", "overlay").attr("width", svgWidth).attr("height", svgHeight);
