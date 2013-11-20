@@ -3,6 +3,7 @@
 // blueprints and rexster https://github.com/tinkerpop/blueprints/wiki
 // context menu: http://joewalnes.com/2011/07/22/a-simple-good-looking-context-menu-for-jquery/
 // context menu: https://github.com/arnklint/jquery-contextMenu
+// ceberhard recommends: http://medialize.github.io/jQuery-contextMenu/
 var htmlUri = 'http://www.w3.org/1999/xhtml';
 var svgNamespaceUri = 'http://www.w3.org/2000/svg';
 var xlinkUri = 'http://www.w3.org/1999/xlink';
