@@ -145,39 +145,37 @@ function showPathwayDialog() {
     });
 }
 
+// TODO context menu
 $(function() {
-
-    $('#editor_svg').contextPopup({
-        title : '',
-        items : [{
-            // addNodeDialog
-            label : 'new node',
-            // icon : 'icons/shopping-basket.png',
-            action : function() {
-                console.log('clicked new node');
+    $.contextMenu({
+        selector : '#editor_svg',
+        callback : function(key, options) {
+            if (key == 'newNode') {
                 showAddNodeDialogBox(graph);
-            }
-        }, {
-            // addEdge
-            label : 'new edge',
-            // icon : 'icons/shopping-basket.png',
-            action : function() {
-                console.log('clicked new edge');
+            } else if (key == 'newEdge') {
                 showAddEdgeDialogBox(graph);
-            }
-        }, null, // divider
-        {
-            label : 'export to UCSC pathway format',
-            // icon : 'icons/application-monitor.png',
-            action : function() {
-                console.log('clicked export to UCSC pathway format');
+            } else if (key == 'showPathway') {
                 showPathwayDialog();
-                // var pidString = graph.toPid();
-                // alert(pidString);
+            } else {
+                console.log('selected ' + key);
             }
-        }]
+        },
+        items : {
+            "newNode" : {
+                name : "new node",
+                icon : null
+            },
+            "newEdge" : {
+                name : "new edge",
+                icon : null
+            },
+            "sep1" : "---------",
+            "showPathway" : {
+                name : "show pathway",
+                icon : null
+            }
+        }
     });
-
 });
 
 // svg.on("contextmenu", function(d, i) {
@@ -303,8 +301,7 @@ var addEdgeForm = editor_div.append("form").style({
     display : 'none'
 }).attr({
     'id' : 'addEdgeForm'
-});
-{// setup node selection mode controls
+}); {// setup node selection mode controls
     addEdgeForm.append('p').text('edge type:');
 
     // TODO build select box for edge type
