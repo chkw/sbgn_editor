@@ -25,5 +25,24 @@
     <body>
         <div id='sbgn_editor'></div>
         <script type="text/javascript" src="scripts/main18.js"></script>
+        <script type="text/javascript">
+            d3.text(graphDataURL, function(error, data) {
+                if (error !== null) {
+                    console.log("error getting graph data --> " + error);
+                }
+
+                // var graph = new graphData();
+                if (endsWith(graphDataURL.toUpperCase(), 'PID')) {
+                    graph.readPid(data);
+                } else if (endsWith(graphDataURL.toUpperCase(), 'SIF')) {
+                    graph.readSif(data);
+                } else {
+                    graph.readTab(data);
+                }
+
+                startEditor();
+            });
+        </script>
+
     </body>
 </html>

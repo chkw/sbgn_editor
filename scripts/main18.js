@@ -516,21 +516,10 @@ function setGraph(graphText, format) {
     }
 }
 
-// network
-d3.text(graphDataURL, function(error, data) {
-    if (error !== null) {
-        console.log("error getting graph data --> " + error);
-    }
-
-    // var graph = new graphData();
-    if (endsWith(graphDataURL.toUpperCase(), 'PID')) {
-        setGraph(data, 'pid');
-    } else if (endsWith(graphDataURL.toUpperCase(), 'SIF')) {
-        setGraph(data, 'sif');
-    } else {
-        setGraph(data, 'tab');
-    }
-
+/**
+ * start the editor after having set the graph via setGraph().
+ */
+function startEditor() {
     // TODO render graph
     updateToCurrentGraphData(svg, force, graph);
 
@@ -632,7 +621,7 @@ d3.text(graphDataURL, function(error, data) {
             display : 'inline'
         });
     }
-});
+};
 
 // TODO instance methods
 
