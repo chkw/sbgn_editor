@@ -503,6 +503,19 @@ function throbberOff() {
     d3.select('#throbber').remove();
 }
 
+/**
+ * Read the graph text file into the graph data object.
+ */
+function setGraph(graphText, format) {
+    if (format.toUpperCase() == 'PID') {
+        graph.readPid(graphText);
+    } else if (format.toUpperCase() == 'SIF') {
+        graph.readSif(graphText);
+    } else {
+        graph.readTab(graphText);
+    }
+}
+
 // network
 d3.text(graphDataURL, function(error, data) {
     if (error !== null) {
@@ -511,11 +524,11 @@ d3.text(graphDataURL, function(error, data) {
 
     // var graph = new graphData();
     if (endsWith(graphDataURL.toUpperCase(), 'PID')) {
-        graph.readPid(data);
+        setGraph(data, 'pid');
     } else if (endsWith(graphDataURL.toUpperCase(), 'SIF')) {
-        graph.readSif(data);
+        setGraph(data, 'sif');
     } else {
-        graph.readTab(data);
+        setGraph(data, 'tab');
     }
 
     // TODO render graph
