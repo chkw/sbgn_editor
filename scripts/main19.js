@@ -1,8 +1,6 @@
 // http://bl.ocks.org/mbostock/929623 shows a nice way to build a graph with intuitive controls.
 // bl.ocks.org/rkirsling/5001347
 // blueprints and rexster https://github.com/tinkerpop/blueprints/wiki
-// context menu: http://joewalnes.com/2011/07/22/a-simple-good-looking-context-menu-for-jquery/
-// context menu: https://github.com/arnklint/jquery-contextMenu
 // ceberhard recommends: http://medialize.github.io/jQuery-contextMenu/
 var htmlUri = 'http://www.w3.org/1999/xhtml';
 var svgNamespaceUri = 'http://www.w3.org/2000/svg';
@@ -20,8 +18,6 @@ var selectableEntityTypes = ['unspecified entity', 'protein', 'gene', 'mRNA', 'm
 var edgeTypeOptions = ['stop adding edges', 'positive regulation', 'negative regulation', 'activate transcription', 'inhibit transcription', 'component of', 'member of'];
 var edgeTypeSymbols = ['stop adding edges', '-a>', '-a|', '-t>', '-t|', 'component>', 'member>'];
 
-var throbberUrl = 'images/loading_16.gif';
-
 // vars for d3.layout.force
 var linkDistance = 120;
 var linkStrength = 0.2;
@@ -30,17 +26,11 @@ var charge = -500;
 var gravity = 0.01;
 
 var nodeRadius = 20;
-var graphDataURL = "data/test_pid";
-graphDataURL = 'data/biopaxpid_75288_rdf_pid';
-graphDataURL = 'data/biopaxpid_96010_xgmml_fix_pid';
-graphDataURL = 'data/pid_erg_small_pathway_v2_pid';
-graphDataURL = 'data/RB1_v5_pid';
+var graphDataURL = 'data/RB1_v5_pid';
 
 var graph = new graphData();
 
 var clickedNodesArray = new Array();
-
-// $("input[type=button]").button();
 
 // div in which the editor should appear
 var editor_div = null;
@@ -113,11 +103,6 @@ svg_defs.append('marker').attr({
     'd' : 'M 0 -5 L 0 5 '
 });
 
-var bbox = document.getElementById('editor_svg').getBBox();
-// var svgWidth = bbox.width / 2, svgHeight = bbox.height / 2;
-console.log('bbox: ' + JSON.stringify(bbox));
-var svgWidth = $(window).width(), svgHeight = $(window).height();
-
 // TODO context menu on svg area
 
 function showPathwayDialog() {
@@ -178,30 +163,6 @@ $(function() {
     });
 });
 
-// svg.on("contextmenu", function(d, i) {
-// d3.event.preventDefault();
-// d3.event.stopPropagation();
-// var position = d3.mouse(this);
-//
-// console.log('right click on blank svg');
-// });
-
-// for zoom/pan
-// var svg = d3.select("body").append("svg").attr({
-// 'width' : svgWidth,
-// 'height' : svgHeight,
-// 'id' : 'editor_svg'
-// }).append('g').call(d3.behavior.zoom().scaleExtent([0.2, 8]).on("zoom", zoom)).append('g');
-//
-// svg.append("rect").attr("class", "overlay").attr("width", svgWidth).attr("height", svgHeight);
-//
-// function zoom() {
-// var tr = d3.event.translate;
-// var scale = d3.event.scale;
-// console.log('zooming\ttranslate: ' + tr + '\tscale: ' + scale);
-// svg.attr("transform", "translate(" + tr + ")scale(" + scale + ")");
-// }
-
 svg.append('g').attr({
     id : 'linkLayer'
 });
@@ -213,31 +174,13 @@ svg.append('g').attr({
 var colorMapper = d3.scale.category20();
 
 // for d3 layout and rendering
-var force = d3.layout.force().size([svgWidth, svgHeight]).linkDistance(linkDistance).linkStrength(linkStrength).friction(friction).gravity(gravity);
+var force = d3.layout.force().size([$(window).width(), $(window).height()]).linkDistance(linkDistance).linkStrength(linkStrength).friction(friction).gravity(gravity);
 
 //TODO setup controls
 
 var form = editor_div.append("form").style({
     display : 'none',
     'id' : 'mainForm'
-});
-
-var currentNodesListBox = form.append('select').attr({
-    id : 'currentNodesListBox',
-    name : 'currentNodesListBox',
-    'class' : 'deleteControl'
-}).on('change', function() {
-    console.log('change');
-}).style({
-    display : 'none'
-});
-
-var currentEdgesListBox = form.append('select').attr({
-    id : 'currentEdgesListBox',
-    name : 'currentEdgesListBox',
-    'class' : 'deleteControl'
-}).on('change', function() {
-    console.log('change');
 });
 
 var newNodeNameTextBox = form.append("input").attr({
@@ -270,30 +213,6 @@ var newNodeButton = form.append("input").attr({
     type : "button",
     value : "add a new node",
     name : "addNodeButton",
-    'class' : 'addControl'
-});
-
-var exportToUcscFormatButton = form.append("input").attr({
-    id : "exportToUcscFormatButton",
-    type : "button",
-    value : "export to UCSC pathway format",
-    name : "exportToUcscFormatButton",
-    'class' : 'displayControl'
-});
-
-var addRandomNodeButton = form.append("input").attr({
-    id : "addRandomNodeButton",
-    type : "button",
-    value : "add random node",
-    name : "addRandomNodeButton",
-    'class' : 'addControl'
-});
-
-var addRandomConnectedNodeButton = form.append("input").attr({
-    id : "addConnectedButton",
-    type : "button",
-    value : "add random connected node",
-    name : "addConnectedButton",
     'class' : 'addControl'
 });
 
@@ -424,11 +343,6 @@ var showElementDialogBox = function(type, graph, index) {
                 },
                 "close" : function() {
                     $(this).dialog("close");
-                    // }, //this just closes it - doesn't clean it up!!
-                    // "destroy" : function() {
-                    // $(this).dialog("destroy");
-                    // //this completely empties the dialog
-                    // //and returns it to its initial state
                 }
             }
         });
@@ -459,21 +373,6 @@ var showElementDialogBox = function(type, graph, index) {
     }
 };
 
-var testButton = form.append('input').attr({
-    id : 'testButton',
-    type : 'button',
-    value : 'testButton',
-    name : 'testButton',
-    'class' : 'displayControl',
-    title : 'test'
-}).on('click', function() {
-    // $(showDialogBox('my title', 'my text'));
-    // closeDialogBox();
-    //d3.select('#pathwayTextArea').text('text from testButton');
-    //$('#pathwayTextArea').val('text from the testButton');
-    console.log('mode:' + getNodeClickMode());
-});
-
 /**
  * get the node click mode, which is selected from the possible types of edges to create
  */
@@ -487,21 +386,6 @@ function getNodeClickMode() {
 }
 
 // TODO draw graph
-
-function throbberOn() {
-    svg.append('image').attr({
-        id : 'throbber',
-        'xlink:href' : throbberUrl,
-        x : (0.5 * svgWidth),
-        y : (0.5 * svgHeight),
-        'width' : 16,
-        'height' : 16
-    });
-}
-
-function throbberOff() {
-    d3.select('#throbber').remove();
-}
 
 /**
  * Read the graph text file into the graph data object.
@@ -553,73 +437,7 @@ function startEditor() {
     });
 
     if (getQueryStringParameterByName('test').toLowerCase() == 'true') {
-        form.style({
-            display : 'inline'
-        });
-
-        currentNodesListBox.style({
-            display : 'inline'
-        });
-
-        currentEdgesListBox.style({
-            display : 'inline'
-        });
-
-        addRandomNodeButton.style({
-            display : 'inline'
-        }).on("click", function() {
-            id = this.getAttribute("id");
-            value = this.getAttribute("value");
-
-            group = Math.floor(Math.random() * 20);
-            graph.addNode(new nodeData({
-                name : Math.random().toString(),
-                'group' : group
-            }));
-
-            updateToCurrentGraphData(svg, force, graph);
-        });
-
-        addRandomConnectedNodeButton.style({
-            display : 'inline'
-        }).on("click", function() {
-            id = this.getAttribute("id");
-            value = this.getAttribute("value");
-
-            group = Math.floor(Math.random() * 20);
-            graph.addNode(new nodeData({
-                name : Math.random().toString(),
-                'group' : group
-            }));
-
-            sourceIdx = graph.nodes.length - 1;
-            targetIdx = Math.floor(Math.random() * graph.nodes.length);
-
-            if (sourceIdx != targetIdx) {
-                graph.addLink(new linkData({
-                    'sourceIdx' : sourceIdx,
-                    'targetIdx' : targetIdx
-                }));
-            }
-
-            updateToCurrentGraphData(svg, force, graph);
-        });
-
-        // graph as PID button
-        exportToUcscFormatButton.on("click", function() {
-            id = this.getAttribute("id");
-            value = this.getAttribute("value");
-
-            var pidString = graph.toPid();
-
-            alert(pidString);
-        }).style({
-            display : 'inline'
-        });
-
-        testButton.style({
-            display : 'inline'
-        });
+        console.log('testing mode');
     }
 };
 
@@ -655,20 +473,6 @@ function renderGraph(svg, force, graph) {"use strict";
 
     // start the layout
     force.nodes(graph.nodes).links(graph.links).start();
-
-    // var drag = force.drag().on("dragstart", function(d) {
-    // var nodeClickMode = getNodeClickMode();
-    // if (nodeClickMode == 'none' || nodeClickMode == edgeTypeOptions[0]) {
-    // var old_fixed = d.fixed;
-    // if (d.fixed != true) {
-    // d.fixed = true;
-    // } else {
-    // d.fixed = false;
-    // }
-    // console.log(d.name + ' old:' + old_fixed + ' new:' + d.fixed);
-    // // d3.select(this).classed("fixed", true);
-    // }
-    // });
 
     // links
     var svgLinkLayer = svg.select('#linkLayer');
@@ -862,63 +666,6 @@ function renderGraph(svg, force, graph) {"use strict";
 }
 
 /**
- *
- * @param {Object} currentGraphData
- */
-function updateCurrentNodesListBox(currentGraphData) {
-    var currentNodesListBox = document.getElementById('currentNodesListBox');
-
-    // clear options starting from the bottom of the listbox
-    var optionElements = currentNodesListBox.getElementsByTagName('option');
-    for (var i = optionElements.length - 1; optionElements.length > 0; i--) {
-        var optionElement = optionElements[i];
-        optionElement.parentNode.removeChild(optionElement);
-    }
-
-    // add options
-    for (var i in currentGraphData['nodes']) {
-        var nodeData = currentGraphData['nodes'][i];
-        var nodeName = nodeData['name'];
-        var optionElement = document.createElementNS(htmlUri, 'option');
-        optionElement.setAttributeNS(null, 'value', nodeName);
-        optionElement.innerHTML = nodeName;
-
-        currentNodesListBox.appendChild(optionElement);
-    }
-}
-
-/**
- *
- * @param {Object} currentGraphData
- */
-function updateCurrentEdgesListBox(currentGraphData) {
-    var listbox = document.getElementById('currentEdgesListBox');
-
-    // clear options starting from the bottom of the listbox
-    var optionElements = listbox.getElementsByTagName('option');
-    for (var i = optionElements.length - 1; optionElements.length > 0; i--) {
-        var optionElement = optionElements[i];
-        optionElement.parentNode.removeChild(optionElement);
-    }
-
-    // add options
-    for (var i in currentGraphData['links']) {
-        var linkData = currentGraphData['links'][i];
-        var sourceNode = linkData['source'];
-        var targetNode = linkData['target'];
-        var relation = linkData['relation'];
-
-        var value = sourceNode['name'] + ' ' + relation + ' ' + targetNode['name'];
-
-        var optionElement = document.createElementNS(htmlUri, 'option');
-        optionElement.setAttributeNS(null, 'value', i);
-        optionElement.innerHTML = value;
-
-        listbox.appendChild(optionElement);
-    }
-}
-
-/**
  * Clear the text from the text areas in the new edge dialog box.
  */
 function resetNewEdgeDialog() {
@@ -1011,8 +758,6 @@ function removeClickedNode(nodeIdx) {
 function updateToCurrentGraphData(svgElement, d3Force, currentGraphData) {
     clearClickedNodes();
     renderGraph(svgElement, d3Force, currentGraphData);
-    updateCurrentNodesListBox(currentGraphData);
-    updateCurrentEdgesListBox(currentGraphData);
     d3.select('#pathwayTextArea').text(currentGraphData.toPid());
 }
 
