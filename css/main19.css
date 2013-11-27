@@ -41,13 +41,13 @@ stroke-width:1.5px;
     stroke-opacity: .6;
 }
 .deleteControl {
-    background-color: lightblue
+    background-color: none
 }
 .addControl {
-    background-color: salmon
+    background-color: none
 }
 .displayControl {
-    background-color: mediumseagreen
+    background-color: none
 }
 /*for d3 zoom*/
 /*.overlay {
