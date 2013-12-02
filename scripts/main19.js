@@ -15,8 +15,11 @@ var complexTypes = ['complex'];
 
 var selectableEntityTypes = ['unspecified entity', 'protein', 'gene', 'mRNA', 'miRNA', 'nucleic acid feature', 'small molecule', 'perturbing agent', 'complex'];
 
-var edgeTypeOptions = ['stop adding edges', 'positive regulation', 'negative regulation', 'activate transcription', 'inhibit transcription', 'component of', 'member of'];
-var edgeTypeSymbols = ['stop adding edges', '-a>', '-a|', '-t>', '-t|', 'component>', 'member>'];
+// var edgeTypeOptions = ['stop adding edges', 'positive regulation', 'negative regulation', 'activate transcription', 'inhibit transcription', 'component of', 'member of'];
+// var edgeTypeSymbols = ['stop adding edges', '-a>', '-a|', '-t>', '-t|', 'component>', 'member>'];
+
+var edgeTypeOptions = ['stop adding edges', 'positive regulation', 'negative regulation', 'activate transcription', 'inhibit transcription'];
+var edgeTypeSymbols = ['stop adding edges', '-a>', '-a|', '-t>', '-t|'];
 
 // vars for d3.layout.force
 var linkDistance = 120;
@@ -220,7 +223,8 @@ var addEdgeForm = editor_div.append("form").style({
     display : 'none'
 }).attr({
     'id' : 'addEdgeForm'
-}); {// setup node selection mode controls
+});
+{// setup node selection mode controls
     addEdgeForm.append('p').text('edge type:');
 
     // TODO build select box for edge type
