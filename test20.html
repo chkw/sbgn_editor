@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>test20.html</title>
+        <meta charset="utf-8">
+        <link type="text/css" rel="stylesheet" href="css/main20.css" />
+
+        <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+        <script type="text/javascript" src="scripts/jquery.contextMenu.js"></script>
+        <link type="text/css" rel="stylesheet" href="css/jquery.contextmenu.css">
+
+        <script type="text/javascript" src="scripts/d3.v3.js"></script>
+        <script type="text/javascript" src="scripts/graphData.js"></script>
+        <noscript>
+            <div align="center">
+                <p style="color:black;background-color:red;font-size:18pt">
+                    This website requires JavaScript.  Please turn on JavaScript and then <a href="">try it again</a>.
+                </p>
+            </div>
+        </noscript>
+    </head>
+    <body>
+        <div id='sbgn_editor'></div>
+        <script type="text/javascript" src="scripts/main20.js"></script>
+        <script type="text/javascript">
+            d3.text(graphDataURL, function(error, data) {
+                if (error !== null) {
+                    console.log("error getting graph data --> " + error);
+                }
+
+                // var graph = new graphData();
+                if (endsWith(graphDataURL.toUpperCase(), 'PID')) {
+                    graph.readPid(data);
+                } else if (endsWith(graphDataURL.toUpperCase(), 'SIF')) {
+                    graph.readSif(data);
+                } else {
+                    graph.readTab(data);
+                }
+
+                startEditor();
+            });
+        </script>
+
+    </body>
+</html>
