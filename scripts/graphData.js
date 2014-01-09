@@ -1,4 +1,11 @@
 /**
+ * chrisw@soe.ucsc.edu
+ * January 9, 2014
+ * graphData object contains nodeData and linkData objects.
+ * These objects are intended to make it easier to pass data to d3's force directed layout.
+ */
+
+/**
  * Data to specify a node.
  */
 function nodeData(data) {
